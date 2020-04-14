@@ -77,9 +77,8 @@ void Window::setup(sf::Vector2u size, const std::string& name)
 	m_size = size;
 	m_name = name;
 	
-	m_eventManager.addCallback("Window_close", &Window::close, this);
-	m_eventManager.addCallback("Window_close2", &Window::close, this);
-	m_eventManager.addCallback("Toggle_fullscreen", &Window::toggleFullscreen, this);
+	m_eventManager.addCallback(StateType (0), "Window_close", &Window::close, this);
+	m_eventManager.addCallback(StateType (0), "Toggle_fullscreen", &Window::toggleFullscreen, this);
 	
 	create();
 }

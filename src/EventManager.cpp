@@ -1,7 +1,8 @@
 #include "EventManager.h"
 
 EventManager::EventManager()
-: m_hasFocus (true)
+: m_currentState (StateType (0))
+, m_hasFocus (true)
 {
 	loadBindings();
 }
@@ -39,9 +40,26 @@ bool EventManager::removeBinding(const std::string& name)
 	return true;
 }
 
-void EventManager::removeCallback(const std::string& name)
+bool EventManager::removeCallback(StateType state, const std::string& name)
 {
-	m_callbacks.erase(name);
+	auto found = m_callbacks.find(state);
+	if (found == m_callbacks.end())
+	{
+		return false;
+	}
+	auto found2 = found->second.find(name);
+	if (found2 == found->second.end())
+	{
+		return false;
+	}
+	
+	found->second.erase(name);
+	return true;
+}
+
+void EventManager::setCurrentState(StateType state)
+{
+	m_currentState = state;
 }
 
 void EventManager::setFocus(bool focus)
@@ -150,10 +168,25 @@ void EventManager::update()
 		
 		if (bind->m_count == bind->m_events.size())
 		{
-			auto found = m_callbacks.find(bind->m_name);
-			if (found != m_callbacks.end())
+			auto stateCallbacks = m_callbacks.find(m_currentState);
+			auto otherCallbacks = m_callbacks.find(StateType (0));
+			
+			if (stateCallbacks != m_callbacks.end())
 			{
-				found->second(&bind->m_details);
+				auto found = stateCallbacks->second.find(bind->m_name);
+				if (found != stateCallbacks->second.end())
+				{
+					found->second(&bind->m_details);
+				}
+			}
+			
+			if (otherCallbacks != m_callbacks.end())
+			{
+				auto found = otherCallbacks->second.find(bind->m_name);
+				if (found != otherCallbacks->second.end())
+				{
+					found->second(&bind->m_details);
+				}
 			}
 		}
 		

@@ -2,7 +2,6 @@
 #define WINDOW_H
 
 #include <SFML/Graphics.hpp>
-
 #include <string>
 
 #include "EventManager.h"
@@ -23,6 +22,7 @@ class Window : private sf::NonCopyable
 		void update();
 		
 		bool isOpen() const;
+		
 		sf::RenderWindow* getRenderWindow();
 		EventManager* getEventManager();
 		
@@ -39,6 +39,7 @@ class Window : private sf::NonCopyable
 	private:
 		
 		sf::RenderWindow m_window;
+		
 		EventManager m_eventManager;
 		
 		sf::Vector2u m_size;
