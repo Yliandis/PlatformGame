@@ -23,13 +23,8 @@ void Node::draw(sf::RenderTarget& target, sf::RenderStates states) const
  * Graph *
  ********/
 
-Graph::Graph()
-: m_cursor (nullptr)
-{ }
-
 Graph::Graph(const sf::Texture& pathTexture)
-: m_cursor (nullptr)
-, m_pathTexture (pathTexture)
+: m_pathTexture (pathTexture)
 { }
 
 void Graph::setTexture(const sf::Texture& pathTexture)
@@ -62,7 +57,7 @@ void Graph::makePath(Level level1, Level level2)
 	
 	if (found1 == m_nodes.end() || found2 == m_nodes.end())
 	{
-		throw std::logic_error ("Graph::makePath() - Unfound levels");
+		throw std::logic_error ("Graph::makePath() - Levels not found");
 	}
 	
 	auto verify1 = std::find(m_paths.begin(), m_paths.end(), std::make_pair(&*found1, &*found2));
@@ -125,11 +120,23 @@ void Graph::calculatePaths()
 	}
 }
 
-void Graph::unlockNode(Level node)
-{ }
+std::vector<Level> Graph::moveTo(Level start, Level goal)
+{
+	return std::vector<Level> (); // TODO pathfinding
+}
 
-void Graph::moveTo(Level goalNode)
-{ }
+sf::Vector2f Graph::getLevelPos(Level level)
+{
+	auto hasLevel = [level] (const Node& node) { return (node.getLevel() == level); };
+	auto found = std::find_if(m_nodes.begin(), m_nodes.end(), hasLevel);
+	
+	if (found == m_nodes.end())
+	{
+		throw std::logic_error ("Graph::getLevelPos() - Level not found");
+	}
+	
+	return getPosition() + found->getPosition();
+}
 
 /*******************
  * Private methods *
@@ -148,7 +155,7 @@ void Graph::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	pathSprite.setOrigin(m_pathTexture.getSize().x / 2, m_pathTexture.getSize().y / 2);
 	
 	float pathTextureLength = sqrt(pow(m_pathTexture.getSize().x, 2) + pow(m_pathTexture.getSize().y, 2));
-	float padding = 10.f; // TODO change to padding depending on the path angle with a view to respect perspective
+	float padding = 10.f; // TODO modify the padding to be related on the path angle and to respect perspective
 	float pathLength = pathTextureLength + padding;
 	
 	for (const auto& path : m_pathPositions)

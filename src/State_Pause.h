@@ -4,6 +4,11 @@
 #include "BaseState.h"
 #include "EventManager.h"
 
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
+
 class State_Pause : public BaseState
 {
 	public:
@@ -22,6 +27,11 @@ class State_Pause : public BaseState
 	private:
 		
 		void resume(EventDetails*);
+		
+		sf::Texture m_texture;
+		sf::Sprite m_sprite;
+		sf::Font m_font;
+		sf::Text m_text;
 		
 };
 

@@ -9,6 +9,7 @@ void State_LevelMenu::onCreate()
 {
 	EventManager* eventManager = m_stateManager->getContext()->m_eventManager;
 	eventManager->addCallback(StateType::LevelMenu, "Back_state", &State_LevelMenu::backToMenu, this);
+	eventManager->addCallback(StateType::LevelMenu, "Mouse_left", &State_LevelMenu::mouseClick, this);
 	
 	m_pathTexture.loadFromFile("media/textures/Path.png");
 	m_levelTexture.loadFromFile("media/textures/LevelGrass.png");
@@ -45,6 +46,7 @@ void State_LevelMenu::onDestroy()
 {
 	EventManager* eventManager = m_stateManager->getContext()->m_eventManager;
 	eventManager->removeCallback(StateType::LevelMenu, "Back_state");
+	eventManager->removeCallback(StateType::LevelMenu, "Mouse_left");
 }
 
 void State_LevelMenu::activate() {}
@@ -66,4 +68,10 @@ void State_LevelMenu::draw()
 void State_LevelMenu::backToMenu(EventDetails* details)
 {
 	m_stateManager->switchTo(StateType::MainMenu);
+}
+
+void State_LevelMenu::mouseClick(EventDetails* details)
+{
+	m_stateManager->switchTo(StateType::Platform);
+	// TODO move character on the right level before switch to the good level (m_currentLevel in sharedContext ?)
 }

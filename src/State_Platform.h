@@ -21,6 +21,7 @@ class State_Platform : public BaseState
 		
 	private:
 		
+		void backToMenu(EventDetails*);
 		void pause(EventDetails*);
 };
 

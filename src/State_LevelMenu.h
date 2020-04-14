@@ -33,6 +33,7 @@ class State_LevelMenu : public BaseState
 	private:
 		
 		void backToMenu(EventDetails*);
+		void mouseClick(EventDetails*);
 		
 	private:
 		

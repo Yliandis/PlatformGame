@@ -39,7 +39,7 @@ class Graph : public sf::Drawable, public sf::Transformable
 {
 	public:
 		
-		Graph();
+		Graph() = default;
 		Graph(const sf::Texture&);
 		
 		void setTexture(const sf::Texture&);
@@ -48,9 +48,8 @@ class Graph : public sf::Drawable, public sf::Transformable
 		void makePath(Level, Level);
 		void calculatePaths();
 		
-		void unlockNode(Level);
-		
-		void moveTo(Level);
+		std::vector<Level> moveTo(Level, Level);
+		sf::Vector2f getLevelPos(Level);
 		
 	private:
 		
@@ -59,14 +58,9 @@ class Graph : public sf::Drawable, public sf::Transformable
 	private:
 		
 		std::vector<Node> m_nodes;
-		std::vector<Node*> m_unlockedNodes;
 		
 		std::vector<std::pair<Node*, Node*>> m_paths;
-		std::vector<std::pair<Node*, Node*>> m_unlockedPaths;
-		
 		std::vector<std::pair<sf::Vector2f, sf::Vector2f>> m_pathPositions;
-		
-		Node* m_cursor;
 		
 		sf::Texture m_pathTexture;
 };
