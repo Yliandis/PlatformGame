@@ -22,8 +22,17 @@ $(O)/StateManager.o: $(O)/State_Intro.o $(O)/State_MainMenu.o $(O)/State_Setting
 $(O)/State_Pause.o: $(O)/EventManager.o
 	$(CC) $(S)/State_Pause.cpp -c -o $(O)/State_Pause.o $(STD) $(FLAGS)
 
-$(O)/State_Platform.o: $(O)/EventManager.o
+$(O)/State_Platform.o: $(O)/EventManager.o $(O)/Board.o $(O)/Player.o
 	$(CC) $(S)/State_Platform.cpp -c -o $(O)/State_Platform.o $(STD) $(FLAGS)
+
+$(O)/Player.o: $(O)/Collider.o
+	$(CC) $(S)/Player.cpp -c -o $(O)/Player.o $(STD) $(FLAGS)
+
+$(O)/Board.o: $(O)/Collider.o
+	$(CC) $(S)/Board.cpp -c -o $(O)/Board.o $(STD) $(FLAGS)
+
+$(O)/Collider.o:
+	$(CC) $(S)/Collider.cpp -c -o $(O)/Collider.o $(STD) $(FLAGS)
 
 $(O)/State_LevelMenu.o: $(O)/EventManager.o $(O)/Graph.o
 	$(CC) $(S)/State_LevelMenu.cpp -c -o $(O)/State_LevelMenu.o $(STD) $(FLAGS)

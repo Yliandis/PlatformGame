@@ -122,7 +122,27 @@ void Graph::calculatePaths()
 
 std::vector<Level> Graph::moveTo(Level start, Level goal)
 {
-	return std::vector<Level> (); // TODO pathfinding
+	/*std::vector<Level> closedList;
+	std::priority_queue<sf::Vector2f> openList;
+	openList.push_back(getLevelPos(start));
+	
+	while (!openList.empty())
+	{
+		sf::Vector2f u = openList.pop_back();
+		
+		if (u == getLevelPos(goal))
+		{
+			// reconstituer le chemin
+			break;
+		}
+		
+		for (voisin v de u)
+		{
+			if (!
+		}
+	}*/
+	
+	return std::vector<Level> ();
 }
 
 sf::Vector2f Graph::getLevelPos(Level level)

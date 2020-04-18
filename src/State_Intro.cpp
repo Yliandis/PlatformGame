@@ -14,9 +14,11 @@ void State_Intro::onCreate()
 	
 	sf::Vector2u windowSize = m_stateManager->getContext()->m_window->getRenderWindow()->getSize();
 	
+	m_backgroundTexture.loadFromFile("media/textures/Background1.png");
 	m_introTexture.loadFromFile("media/textures/Title.png");
 	m_font.loadFromFile("media/fonts/Arial.ttf");
 	
+	m_backgroundSprite.setTexture(m_backgroundTexture);
 	m_introSprite.setTexture(m_introTexture);
 	m_text.setFont(m_font);
 	
@@ -24,7 +26,7 @@ void State_Intro::onCreate()
 	m_introSprite.setPosition(windowSize.x / 2.f, 0.f);
 	
 	m_text.setString("Press enter to continue");
-	m_text.setCharacterSize(15);
+	m_text.setCharacterSize(30);
 	sf::FloatRect textRect = m_text.getLocalBounds();
 	m_text.setOrigin(textRect.left + textRect.width / 2.f, textRect.top + textRect.height / 2.f);
 	m_text.setPosition(windowSize.x / 2.f, windowSize.y / 2.f);
@@ -55,6 +57,7 @@ void State_Intro::draw()
 {
 	Window* window = m_stateManager->getContext()->m_window;
 	
+	window->draw(m_backgroundSprite);
 	window->draw(m_introSprite);
 	if (m_timePassed >= 2.f)
 	{

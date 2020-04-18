@@ -39,8 +39,8 @@ void Game::processEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	m_window.update();
 	m_stateManager.update(deltaTime);
+	m_window.update();
 }
 
 void Game::render()

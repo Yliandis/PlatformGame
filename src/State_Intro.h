@@ -30,7 +30,9 @@ class State_Intro : public BaseState
 		
 	private:
 		
+		sf::Texture m_backgroundTexture;
 		sf::Texture m_introTexture;
+		sf::Sprite m_backgroundSprite;
 		sf::Sprite m_introSprite;
 		sf::Font m_font;
 		sf::Text m_text;

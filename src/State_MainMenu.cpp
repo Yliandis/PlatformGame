@@ -10,12 +10,14 @@ void State_MainMenu::onCreate()
 	EventManager* eventManager = m_stateManager->getContext()->m_eventManager;
 	eventManager->addCallback(StateType::MainMenu, "Mouse_left", &State_MainMenu::mouseLeft, this);
 	
+	m_backgroundTexture.loadFromFile("media/textures/Background1.png");
 	m_titleTexture.loadFromFile("media/textures/Title.png");
 	m_buttonTexture.loadFromFile("media/textures/Button.png");
 	m_font.loadFromFile("media/fonts/Seagram.ttf");
 	
 	sf::Vector2u windowSize = m_stateManager->getContext()->m_window->getRenderWindow()->getSize();
 	
+	m_backgroundSprite.setTexture(m_backgroundTexture);
 	m_titleSprite.setTexture(m_titleTexture);
 	m_titleSprite.setOrigin(m_titleTexture.getSize().x / 2.f, m_titleTexture.getSize().y / 2.f);
 	m_titleSprite.setPosition(windowSize.x / 2.f, 162.f);
@@ -65,6 +67,7 @@ void State_MainMenu::draw()
 {
 	Window* window = m_stateManager->getContext()->m_window;
 	
+	window->draw(m_backgroundSprite);
 	window->draw(m_titleSprite);
 	for (unsigned i = 0 ; i < 3 ; ++i)
 	{

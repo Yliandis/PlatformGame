@@ -30,8 +30,10 @@ class State_MainMenu : public BaseState
 		
 	private:
 		
+		sf::Texture m_backgroundTexture;
 		sf::Texture m_titleTexture;
 		sf::Texture m_buttonTexture;
+		sf::Sprite m_backgroundSprite;
 		sf::Sprite m_titleSprite;
 		sf::Sprite m_buttonSprite [3];
 		

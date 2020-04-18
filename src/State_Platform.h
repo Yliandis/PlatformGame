@@ -3,6 +3,8 @@
 
 #include "BaseState.h"
 #include "EventManager.h"
+#include "Board.h"
+#include "Player.h"
 
 class State_Platform : public BaseState
 {
@@ -23,6 +25,13 @@ class State_Platform : public BaseState
 		
 		void backToMenu(EventDetails*);
 		void pause(EventDetails*);
+		
+	private:
+		
+		Board m_board;
+		Player m_player;
+		
+		sf::Texture m_playerTexture;
 };
 
 #endif // STATEPLATFORM_H
