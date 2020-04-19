@@ -16,11 +16,12 @@ class Player : public sf::Drawable
 {
 	public:
 		
-		Player(float);
-		Player(sf::Texture*, float);
+		Player(float speed, float jumpHeight);
+		Player(sf::Texture*, float speed, float jumpHeight);
 		void setTexture(sf::Texture*);
 		
 		void update(sf::Time);
+		void onCollision(sf::Vector2f);
 		
 		Collider getCollider();
 		
@@ -35,6 +36,11 @@ class Player : public sf::Drawable
 		
 		float m_speed;
 		sf::Vector2f m_velocity;
+		
+		bool m_canJump;
+		float m_jumpHeight;
+		
+		//sf::RectangleShape m_preHitBox;
 };
 
 #endif // PLAYER_H

@@ -100,6 +100,8 @@ void Board::loadFromFile(const std::string& filename)
 				{
 					m_blocks.emplace_back(sf::Vector2f (48.f, 48.f));
 					m_blocks.back().setTexture(it.second);
+					//m_blocks.back().setOutlineColor(sf::Color::Red);
+					//m_blocks.back().setOutlineThickness(-1.f);
 					m_blocks.back().setPosition(i * 48.f, j * 48.f);
 				}
 			}

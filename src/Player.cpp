@@ -1,19 +1,33 @@
 #include "Player.h"
 
-Player::Player(float speed)
+Player::Player(float speed, float jumpHeight)
 : m_body ({48.f, 48.f})
 , m_collider(&m_body)
 , m_speed (speed)
 , m_velocity (0.f, 0.f)
-{ }
+, m_canJump (false)
+, m_jumpHeight (jumpHeight)
+//, m_preHitBox ({48.f, 48.f})
+{
+	//m_preHitBox.setFillColor(sf::Color::Transparent);
+	//m_preHitBox.setOutlineColor(sf::Color::Cyan);
+	//m_preHitBox.setOutlineThickness(-1.f);
+}
 
-Player::Player(sf::Texture* texture, float speed)
+Player::Player(sf::Texture* texture, float speed, float jumpHeight)
 : m_body ({48.f, 48.f})
 , m_collider (&m_body)
 , m_speed (speed)
 , m_velocity (0.f, 0.f)
+, m_canJump (false)
+, m_jumpHeight (jumpHeight)
+//, m_preHitBox ({48.f, 48.f})
 {
 	m_body.setTexture(texture);
+	
+	//m_preHitBox.setFillColor(sf::Color::Transparent);
+	//m_preHitBox.setOutlineColor(sf::Color::Cyan);
+	//m_preHitBox.setOutlineThickness(-1.f);
 }
 
 void Player::setTexture(sf::Texture* texture)
@@ -23,18 +37,48 @@ void Player::setTexture(sf::Texture* texture)
 
 void Player::update(sf::Time deltaTime)
 {
-	m_velocity = sf::Vector2f (0.f, 0.f);
+	float gravity = 9.81f * 120.f;
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		m_velocity.y -= m_speed * deltaTime.asSeconds();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		m_velocity.y += m_speed * deltaTime.asSeconds();
+	m_velocity.x *= 0.2f;
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		m_velocity.x -= m_speed * deltaTime.asSeconds();
+		m_velocity.x -= m_speed;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		m_velocity.x += m_speed * deltaTime.asSeconds();
+		m_velocity.x += m_speed;
 	
-	m_body.move(m_velocity);
+	if (m_canJump && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		m_canJump = false;
+		m_velocity.y = -sqrtf(2.f * gravity * m_jumpHeight);
+	}
+	
+	m_velocity.y += gravity * deltaTime.asSeconds();
+	
+	m_body.move(m_velocity * deltaTime.asSeconds());
+	
+	//m_preHitBox.setPosition(m_body.getPosition());
+}
+
+void Player::onCollision(sf::Vector2f direction)
+{
+	if (direction.x < 0.f)
+	{
+		m_velocity.x = 0.f;
+	}
+	else if (direction.x > 0.f)
+	{
+		m_velocity.x = 0.f;
+	}
+	
+	if (direction.y > 0.f)
+	{
+		m_velocity.y = 0.f;
+		m_canJump = true;
+	}
+	else if (direction.y < 0.f)
+	{
+		m_velocity.y = 0.f;
+	}
 }
 
 Collider Player::getCollider()
@@ -45,4 +89,5 @@ Collider Player::getCollider()
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_body, states);
+	//target.draw(m_preHitBox, states);
 }

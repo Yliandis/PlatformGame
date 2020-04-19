@@ -4,7 +4,7 @@
 State_Platform::State_Platform(StateManager* stateManager)
 : BaseState (stateManager)
 , m_board ()
-, m_player (150.f)
+, m_player (150.f, 150.f)
 { }
 
 void State_Platform::onCreate()
@@ -38,9 +38,13 @@ void State_Platform::update(sf::Time deltaTime)
 {
 	m_player.update(deltaTime);
 	
+	sf::Vector2f direction;
 	for (auto collider : m_board.getColliders())
 	{
-		m_player.getCollider().checkCollision(collider, 0.0f);
+		if (m_player.getCollider().checkCollision(collider, direction, 0.f))
+		{
+			m_player.onCollision(direction);
+		}
 	}
 }
 

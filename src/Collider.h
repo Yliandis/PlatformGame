@@ -14,7 +14,7 @@ class Collider
 		
 		void move(float dx, float dy);
 		
-		bool checkCollision(Collider&, float push);
+		bool checkCollision(Collider&, sf::Vector2f& direction, float push);
 		
 		sf::Vector2f getCenter() const;
 		sf::Vector2f getHalfSize() const;

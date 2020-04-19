@@ -9,7 +9,7 @@ void Collider::move(float dx, float dy)
 	m_body->move(dx, dy);
 }
 
-bool Collider::checkCollision(Collider& other, float push)
+bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float push)
 {
 	sf::Vector2f thisPosition = getCenter();
 	sf::Vector2f thisHalfSize = getHalfSize();
@@ -32,24 +32,36 @@ bool Collider::checkCollision(Collider& other, float push)
 			{
 				move(intersectX * (1 - push), 0.f);
 				other.move(-intersectX * push, 0.f);
+				
+				direction.x = 1.f;
+				direction.y = 0.f;
 			}
 			else
 			{
 				move(-intersectX * (1 - push), 0.f);
 				other.move(intersectX * push, 0.f);
+				
+				direction.x = -1.f;
+				direction.y = 0.f;
 			}
 		}
-		else
+		else if (intersectY > intersectX)
 		{
 			if (deltaY > 0.f)
 			{
 				move(0.f, intersectY * (1 - push));
 				other.move(0.f, -intersectY * push);
+				
+				direction.x = 0.f;
+				direction.y = 1.f;
 			}
 			else
 			{
 				move(0.f, -intersectY * (1 - push));
 				other.move(0.f, intersectY * push);
+				
+				direction.x = 0.f;
+				direction.y = -1.f;
 			}
 		}
 		
