@@ -13,6 +13,7 @@ std::string getTextureName(Block block)
 }
 
 Board::Board()
+: m_collider (Style::Separated)
 {
 	m_textures.emplace(Block::Air, nullptr);
 	
@@ -44,7 +45,7 @@ void Board::clean()
 {
 	m_board.resize(0);
 	m_blocks.resize(0);
-	m_colliders.resize(0, nullptr);
+	m_collider.clean();
 }
 
 void Board::loadFromFile(const std::string& filename)
@@ -100,8 +101,6 @@ void Board::loadFromFile(const std::string& filename)
 				{
 					m_blocks.emplace_back(sf::Vector2f (48.f, 48.f));
 					m_blocks.back().setTexture(it.second);
-					//m_blocks.back().setOutlineColor(sf::Color::Red);
-					//m_blocks.back().setOutlineThickness(-1.f);
 					m_blocks.back().setPosition(i * 48.f, j * 48.f);
 				}
 			}
@@ -110,10 +109,7 @@ void Board::loadFromFile(const std::string& filename)
 	
 	file.close();
 	
-	for (auto& block : m_blocks)
-	{
-		m_colliders.emplace_back(&block);
-	}
+	m_collider.setBodies(m_blocks.begin(), m_blocks.end());
 }
 
 sf::Vector2u Board::getSize() const
@@ -141,9 +137,9 @@ Block Board::getBlock(unsigned i, unsigned j) const
 	return m_board[i][j];
 }
 
-std::vector<Collider> Board::getColliders()
+Collider& Board::getCollider()
 {
-	return m_colliders;
+	return m_collider;
 }
 
 /*******************

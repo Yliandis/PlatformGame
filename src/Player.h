@@ -23,7 +23,7 @@ class Player : public sf::Drawable
 		void update(sf::Time);
 		void onCollision(sf::Vector2f);
 		
-		Collider getCollider();
+		Collider& getCollider();
 		
 	private:
 		
@@ -39,8 +39,6 @@ class Player : public sf::Drawable
 		
 		bool m_canJump;
 		float m_jumpHeight;
-		
-		//sf::RectangleShape m_preHitBox;
 };
 
 #endif // PLAYER_H

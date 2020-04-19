@@ -2,32 +2,22 @@
 
 Player::Player(float speed, float jumpHeight)
 : m_body ({48.f, 48.f})
-, m_collider(&m_body)
+, m_collider(m_body)
 , m_speed (speed)
 , m_velocity (0.f, 0.f)
 , m_canJump (false)
 , m_jumpHeight (jumpHeight)
-//, m_preHitBox ({48.f, 48.f})
-{
-	//m_preHitBox.setFillColor(sf::Color::Transparent);
-	//m_preHitBox.setOutlineColor(sf::Color::Cyan);
-	//m_preHitBox.setOutlineThickness(-1.f);
-}
+{ }
 
 Player::Player(sf::Texture* texture, float speed, float jumpHeight)
 : m_body ({48.f, 48.f})
-, m_collider (&m_body)
+, m_collider (m_body)
 , m_speed (speed)
 , m_velocity (0.f, 0.f)
 , m_canJump (false)
 , m_jumpHeight (jumpHeight)
-//, m_preHitBox ({48.f, 48.f})
 {
 	m_body.setTexture(texture);
-	
-	//m_preHitBox.setFillColor(sf::Color::Transparent);
-	//m_preHitBox.setOutlineColor(sf::Color::Cyan);
-	//m_preHitBox.setOutlineThickness(-1.f);
 }
 
 void Player::setTexture(sf::Texture* texture)
@@ -55,8 +45,6 @@ void Player::update(sf::Time deltaTime)
 	m_velocity.y += gravity * deltaTime.asSeconds();
 	
 	m_body.move(m_velocity * deltaTime.asSeconds());
-	
-	//m_preHitBox.setPosition(m_body.getPosition());
 }
 
 void Player::onCollision(sf::Vector2f direction)
@@ -81,7 +69,7 @@ void Player::onCollision(sf::Vector2f direction)
 	}
 }
 
-Collider Player::getCollider()
+Collider& Player::getCollider()
 {
 	return m_collider;
 }
@@ -89,5 +77,4 @@ Collider Player::getCollider()
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_body, states);
-	//target.draw(m_preHitBox, states);
 }

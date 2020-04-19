@@ -39,7 +39,7 @@ class Board : public sf::Drawable
 		sf::Vector2u getSize() const;
 		Block getBlock(unsigned, unsigned) const;
 		
-		std::vector<Collider> getColliders();
+		Collider& getCollider();
 		
 	private:
 		
@@ -51,7 +51,7 @@ class Board : public sf::Drawable
 	
 	std::map<Block, sf::Texture*> m_textures;
 	std::vector<sf::RectangleShape> m_blocks;
-	std::vector<Collider> m_colliders;
+	Collider m_collider;
 };
 
 #endif // BOARD_H
