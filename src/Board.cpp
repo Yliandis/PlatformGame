@@ -109,7 +109,7 @@ void Board::loadFromFile(const std::string& filename)
 	
 	file.close();
 	
-	m_collider.setBodies(m_blocks.begin(), m_blocks.end());
+	m_collider.pushBodies(m_blocks.begin(), m_blocks.end());
 }
 
 sf::Vector2u Board::getSize() const

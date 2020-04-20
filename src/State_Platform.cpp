@@ -41,7 +41,7 @@ void State_Platform::update(sf::Time deltaTime)
 	sf::Vector2f direction;
 	if (m_player.getCollider().checkCollision(m_board.getCollider(), direction, 0.f))
 	{
-		m_player.onCollision(-direction);
+		m_player.onCollision(direction);
 	}
 }
 

@@ -38,9 +38,9 @@ void Player::update(sf::Time deltaTime)
 	
 	if (m_canJump && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		m_canJump = false;
 		m_velocity.y = -sqrtf(2.f * gravity * m_jumpHeight);
 	}
+	m_canJump = false;
 	
 	m_velocity.y += gravity * deltaTime.asSeconds();
 	
@@ -65,7 +65,10 @@ void Player::onCollision(sf::Vector2f direction)
 	}
 	else if (direction.y < 0.f)
 	{
-		m_velocity.y = 0.f;
+		if (m_velocity.y < 0.f)
+		{
+			m_velocity.y = 0.f;
+		}
 	}
 }
 

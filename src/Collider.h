@@ -23,8 +23,8 @@ class Collider
 		: m_style (style)
 		{ }
 		
-		Collider(sf::RectangleShape& rect, Style style = Style::Together)
-		: m_bodies {&rect}
+		Collider(sf::RectangleShape& body, Style style = Style::Together)
+		: m_bodies {&body}
 		, m_style (style)
 		{ }
 		
@@ -32,11 +32,16 @@ class Collider
 		Collider(It first, It last, Style style = Style::Together)
 		: m_style (style)
 		{
-			setBodies(first, last);
+			pushBodies(first, last);
+		}
+		
+		void pushBody(sf::RectangleShape& body)
+		{
+			m_bodies.push_back(&body);
 		}
 		
 		template <class It>
-		void setBodies(It first, It last)
+		void pushBodies(It first, It last)
 		{
 			for (auto it = first ; it != last ; ++it)
 			{
@@ -46,7 +51,11 @@ class Collider
 		
 		void clean();
 		
-		bool checkCollision(Collider&, sf::Vector2f& direction, float push);
+		bool checkCollision(Collider&, float);
+		bool checkCollision(Collider&, sf::Vector2f&, float);
+		bool checkCollision(Collider&, std::vector<std::pair<std::size_t, std::size_t>>&, float);
+		bool checkCollision(Collider&, sf::Vector2f&, std::vector<std::pair<std::size_t, std::size_t>>&, float);
+		
 		sf::Vector2f pushCalculate(sf::Vector2f intersect, sf::Vector2f delta);
 		
 		void setStyle(Style);

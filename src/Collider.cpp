@@ -10,7 +10,29 @@ void Collider::clean()
 	}
 }
 
+bool Collider::checkCollision(Collider& other, float push)
+{
+	sf::Vector2f direction;
+	std::vector<std::pair<std::size_t, std::size_t>> effectiveCollisions;
+	
+	return checkCollision(other, direction, effectiveCollisions, push);
+}
+
 bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float push)
+{
+	std::vector<std::pair<std::size_t, std::size_t>> effectiveCollisions;
+	
+	return checkCollision(other, direction, effectiveCollisions, push);
+}
+
+bool Collider::checkCollision(Collider& other, std::vector<std::pair<std::size_t, std::size_t>>& effectiveCollisions, float push)
+{
+	sf::Vector2f direction;
+	
+	return checkCollision(other, direction, effectiveCollisions, push);
+}
+
+bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, std::vector<std::pair<std::size_t, std::size_t>>& effectiveCollisions, float push)
 {
 	/*
 	 * Calculating each collision with associated intersections
@@ -46,6 +68,11 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
 	
 	bool result = !collidedShapes.empty();
 	
+	direction.x = 0.f;
+	direction.y = 0.f;
+	
+	effectiveCollisions.resize(0);
+	
 	/*
 	 * Pushing and calculating collisions
 	 * while there's no more
@@ -72,40 +99,37 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
 			}
 		}
 		
+		effectiveCollisions.push_back(collidedShapes[maxAreaIndex]);
+		
 		/*
 		 * Doing the push for the more important collision
 		 */
 		
-		std::vector<sf::RectangleShape*> thisToPush;
-		std::vector<sf::RectangleShape*> otherToPush;
+		sf::Vector2f pushValue = pushCalculate(collisionIntersects[maxAreaIndex], collisionDeltas[maxAreaIndex]);
+		direction -= pushValue;
 		
 		if (getStyle() == Style::Together)
 		{
-			thisToPush = m_bodies;
+			for (sf::RectangleShape* shape : m_bodies)
+			{
+				shape->move(pushValue * (1 - push));
+			}
 		}
 		else
 		{
-			thisToPush.push_back(m_bodies[collidedShapes[maxAreaIndex].first]);
+			m_bodies[collidedShapes[maxAreaIndex].first]->move(pushValue * (1 - push));
 		}
+		
 		if (other.getStyle() == Style::Together)
 		{
-			otherToPush = other.m_bodies;
+			for (sf::RectangleShape* shape : other.m_bodies)
+			{
+				shape->move(pushValue * (-push));
+			}
 		}
 		else
 		{
-			otherToPush.push_back(other.m_bodies[collidedShapes[maxAreaIndex].second]);
-		}
-		
-		sf::Vector2f pushValue = pushCalculate(collisionIntersects[maxAreaIndex], collisionDeltas[maxAreaIndex]);
-		direction += pushValue;
-		
-		for (sf::RectangleShape* shape : thisToPush)
-		{
-			shape->move(pushValue * (1 - push));
-		}
-		for (sf::RectangleShape* shape : otherToPush)
-		{
-			shape->move(pushValue * (-push));
+			other.m_bodies[collidedShapes[maxAreaIndex].second]->move(pushValue * (-push));
 		}
 		
 		/*
