@@ -5,6 +5,9 @@
 #include "EventManager.h"
 #include "Graph.h"
 
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/Rect.hpp>
+
 enum class Level
 {
 	Egypte,
@@ -41,6 +44,8 @@ class State_LevelMenu : public BaseState
 		
 		sf::Texture m_pathTexture;
 		sf::Texture m_levelTexture;
+		
+		sf::View m_view;
 };
 
 #endif // STATELEVELMENU_H

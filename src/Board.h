@@ -37,7 +37,7 @@ class Board : public sf::Drawable
 		void loadFromFile(const std::string&);
 		
 		sf::Vector2u getSize() const;
-		Block getBlock(unsigned, unsigned) const;
+		sf::Vector2f getSpawn() const;
 		
 		Collider& getCollider();
 		
@@ -48,6 +48,8 @@ class Board : public sf::Drawable
 	private:
 	
 	std::vector<std::vector<Block>> m_board;
+	
+	sf::Vector2u m_spawnPoint;
 	
 	std::map<Block, sf::Texture*> m_textures;
 	std::vector<sf::RectangleShape> m_blocks;

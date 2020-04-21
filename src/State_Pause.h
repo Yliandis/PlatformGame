@@ -8,6 +8,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 class State_Pause : public BaseState
 {
@@ -28,11 +30,14 @@ class State_Pause : public BaseState
 		
 		void resume(EventDetails*);
 		
+	private:
+		
 		sf::Texture m_texture;
 		sf::Sprite m_sprite;
 		sf::Font m_font;
 		sf::Text m_text;
 		
+		sf::View m_view;
 };
 
 #endif // STATEPAUSE_H

@@ -59,6 +59,7 @@ void Board::loadFromFile(const std::string& filename)
 		throw std::runtime_error ("Board::loadFromFile() - Failed to load " + filename);
 	}
 	
+	// reading board size
 	std::string firstLine;
 	std::getline(file, firstLine);
 	std::stringstream sFirstLine (firstLine);
@@ -67,6 +68,7 @@ void Board::loadFromFile(const std::string& filename)
 	unsigned sizeY;
 	sFirstLine >> sizeX >> sizeY;
 	
+	// resizing m_board vector
 	for (unsigned i = 0 ; i < sizeX ; ++i)
 	{
 		m_board.push_back(std::vector<Block> ());
@@ -77,6 +79,7 @@ void Board::loadFromFile(const std::string& filename)
 		}
 	}
 	
+	// reading all blocks
 	for (unsigned j = 0 ; j < sizeY ; ++j)
 	{
 		std::string line;
@@ -107,6 +110,9 @@ void Board::loadFromFile(const std::string& filename)
 		}
 	}
 	
+	// player spawn position
+	file >> m_spawnPoint.x >> m_spawnPoint.y;
+	
 	file.close();
 	
 	m_collider.pushBodies(m_blocks.begin(), m_blocks.end());
@@ -125,16 +131,9 @@ sf::Vector2u Board::getSize() const
 		
 }
 
-Block Board::getBlock(unsigned i, unsigned j) const
+sf::Vector2f Board::getSpawn() const
 {
-	sf::Vector2u size = getSize();
-	
-	if (i >= size.x || j >= size.y)
-	{
-		throw std::out_of_range ("Board::getBlock() - This block doesn't exist");
-	}
-	
-	return m_board[i][j];
+	return {m_spawnPoint.x * 48.f, m_spawnPoint.y * 48.f};
 }
 
 Collider& Board::getCollider()

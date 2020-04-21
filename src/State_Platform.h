@@ -6,6 +6,9 @@
 #include "Board.h"
 #include "Player.h"
 
+#include <SFML/Graphics/View.hpp>
+#include <SFML/Graphics/Rect.hpp>
+
 class State_Platform : public BaseState
 {
 	public:
@@ -21,6 +24,9 @@ class State_Platform : public BaseState
 		virtual void update(sf::Time);
 		virtual void draw();
 		
+		void loadLevel();
+		void adaptView(bool);
+		
 	private:
 		
 		void backToMenu(EventDetails*);
@@ -32,6 +38,11 @@ class State_Platform : public BaseState
 		Player m_player;
 		
 		sf::Texture m_playerTexture;
+		
+		std::vector<sf::RectangleShape> m_worldBounds;
+		Collider m_worldCollider;
+		
+		sf::View m_view;
 };
 
 #endif // STATEPLATFORM_H

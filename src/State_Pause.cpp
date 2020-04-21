@@ -3,7 +3,11 @@
 
 State_Pause::State_Pause(StateManager* stateManager)
 : BaseState (stateManager)
-{ }
+{
+	sf::RenderWindow* window = m_stateManager->getContext()->m_window->getRenderWindow();
+	
+	m_view.reset({0.f, 0.f, float(window->getSize().x), float(window->getSize().y)});
+}
 
 void State_Pause::onCreate()
 {
@@ -38,6 +42,7 @@ void State_Pause::onDestroy()
 }
 
 void State_Pause::activate() {}
+
 void State_Pause::deactivate() {}
 
 void State_Pause::update(sf::Time) {}
@@ -45,6 +50,8 @@ void State_Pause::update(sf::Time) {}
 void State_Pause::draw()
 {
 	Window* window = m_stateManager->getContext()->m_window;
+	
+	window->getRenderWindow()->setView(m_view);
 	
 	window->draw(m_sprite);
 	window->draw(m_text);

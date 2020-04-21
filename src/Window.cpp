@@ -10,6 +10,7 @@ Window::Window()
 Window::Window(sf::Vector2u size, const std::string& name)
 : m_isOpen (true)
 , m_isFullscreen (false)
+
 {
 	setup(size, name);
 }

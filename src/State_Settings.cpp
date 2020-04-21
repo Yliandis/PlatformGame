@@ -18,6 +18,7 @@ void State_Settings::onDestroy()
 }
 
 void State_Settings::activate() {}
+
 void State_Settings::deactivate() {}
 
 void State_Settings::update(sf::Time) {}

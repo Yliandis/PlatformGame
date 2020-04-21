@@ -3,7 +3,11 @@
 
 State_LevelMenu::State_LevelMenu(StateManager* stateManager)
 : BaseState (stateManager)
-{ }
+{
+	sf::RenderWindow* window = m_stateManager->getContext()->m_window->getRenderWindow();
+	
+	m_view.reset(sf::FloatRect (0.f, 0.f, float(window->getSize().x), float(window->getSize().y)));
+}
 
 void State_LevelMenu::onCreate()
 {
@@ -49,14 +53,20 @@ void State_LevelMenu::onDestroy()
 	eventManager->removeCallback(StateType::LevelMenu, "Mouse_left");
 }
 
-void State_LevelMenu::activate() {}
-void State_LevelMenu::deactivate() {}
+void State_LevelMenu::activate()
+{ }
 
-void State_LevelMenu::update(sf::Time) {}
+void State_LevelMenu::deactivate()
+{ }
+
+void State_LevelMenu::update(sf::Time)
+{ }
 
 void State_LevelMenu::draw()
 {
 	Window* window = m_stateManager->getContext()->m_window;
+	
+	window->getRenderWindow()->setView(m_view);
 	
 	window->draw(m_graph);
 }

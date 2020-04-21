@@ -25,6 +25,9 @@ class Player : public sf::Drawable
 		
 		Collider& getCollider();
 		
+		void setPosition(sf::Vector2f);
+		sf::Vector2f getPosition() const;
+		
 	private:
 		
 		virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
