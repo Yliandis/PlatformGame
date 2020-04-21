@@ -57,11 +57,10 @@ void State_Platform::update(sf::Time deltaTime)
 		{
 			// player dies
 			m_player.setPosition(m_board.getSpawn());
-			adaptView(true);
 		}
 	}
 	
-	adaptView(false);
+	updateView();
 }
 
 void State_Platform::draw()
@@ -105,11 +104,10 @@ void State_Platform::loadLevel()
 	 */
 	
 	m_player.setPosition(m_board.getSpawn());
-	adaptView(false);
+	updateView();
 }
 
-void State_Platform::adaptView(bool forcePlayerView)
-// TODO find something better than this boolean to avoid order contradictions
+void State_Platform::updateView()
 {
 	sf::Vector2f playerCenter = m_player.getPosition();
 	// calculate the real center because the player's origin is its top left corner
@@ -131,22 +129,29 @@ void State_Platform::adaptView(bool forcePlayerView)
 	bool rightExcess = (viewCenter.x + viewHalfSize.x >= pixelBoardSize.x);
 	bool bottomExcess = (viewCenter.y + viewHalfSize.y >= pixelBoardSize.y);
 	
+	if (!leftExcess && playerCenter.x - 24.f < leftLimit) // view is too on the right
+	{
+		m_view.move(playerCenter.x - 24.f - leftLimit, 0.f); // move it to the left
+		
+		viewCenter.x += playerCenter.x - 24.f - leftLimit;
+		leftExcess = (viewCenter.x - viewHalfSize.x <= 0.f);
+		rightExcess = (viewCenter.x + viewHalfSize.x >= pixelBoardSize.x); // because it cames afterwards
+	}
 	if (leftExcess)
 	{
 		m_view.move(viewHalfSize.x - viewCenter.x, 0.f);
 	}
-	if ((forcePlayerView || !leftExcess) && playerCenter.x - 24.f < leftLimit) // view is too on the right
-	{
-		m_view.move(playerCenter.x - 24.f - leftLimit, 0.f); // move it to the left
-	}
 	
-	if (viewCenter.x + viewHalfSize.x > pixelBoardSize.x)
-	{
-		m_view.move(pixelBoardSize.x - viewCenter.x - viewHalfSize.x, 0.f);
-	}
-	if ((forcePlayerView || !rightExcess) && playerCenter.x + 24.f > rightLimit) // view is too on the left
+	if (!rightExcess && playerCenter.x + 24.f > rightLimit) // view is too on the left
 	{
 		m_view.move(playerCenter.x + 24.f - rightLimit, 0.f); // move it to the right
+		
+		viewCenter.x += playerCenter.x + 24.f - rightLimit;
+		rightExcess = (viewCenter.x + viewHalfSize.x >= pixelBoardSize.x);
+	}
+	if (rightExcess)
+	{
+		m_view.move(pixelBoardSize.x - viewCenter.x - viewHalfSize.x, 0.f);
 	}
 	
 	// no top excess
@@ -155,13 +160,16 @@ void State_Platform::adaptView(bool forcePlayerView)
 		m_view.move(0.f, playerCenter.y - 24.f - topLimit); // move it up
 	}
 	
+	if (!bottomExcess && playerCenter.y + 24.f > bottomLimit) // view is too high
+	{
+		m_view.move(0.f, playerCenter.y + 24.f - bottomLimit); // move it down
+		
+		viewCenter.y += playerCenter.y + 24.f - bottomLimit;
+		bottomExcess = (viewCenter.y + viewHalfSize.y >= pixelBoardSize.y);
+	}
 	if (bottomExcess)
 	{
 		m_view.move(0.f, pixelBoardSize.y - viewCenter.y - viewHalfSize.y);
-	}
-	if ((forcePlayerView || !bottomExcess) && playerCenter.y + 24.f > bottomLimit) // view is too high
-	{
-		m_view.move(0.f, playerCenter.y + 24.f - bottomLimit); // move it down
 	}
 }
 

@@ -25,7 +25,7 @@ class State_Platform : public BaseState
 		virtual void draw();
 		
 		void loadLevel();
-		void adaptView(bool);
+		void updateView();
 		
 	private:
 		
